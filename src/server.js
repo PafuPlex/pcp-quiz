@@ -1,4 +1,5 @@
 import express from 'express';
+import compression from 'compression'
 import cookieParser from 'cookie-parser';
 import debug from 'debug';
 import { compare, genSalt, hash } from 'bcrypt';
