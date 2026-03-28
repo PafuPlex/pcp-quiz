@@ -42,6 +42,13 @@ app.use(express.json());
 app.use(compression())
 app.use(express.static('public'))
 
+app.get('/api/health', (_, res) => {
+    res.send({
+        name: process.env.npm_package_name,
+        version: process.env.npm_package_version,
+    });
+});
+
 app.use((req, res, next) => {
     res.on('finish', () =>
         logger.info(
@@ -52,13 +59,6 @@ app.use((req, res, next) => {
         ),
     );
     next();
-});
-
-app.get('/health', (_, res) => {
-    res.send({
-        name: process.env.npm_package_name,
-        version: process.env.npm_package_version,
-    });
 });
 
 app.post('/api/login', async (req, res) => {
