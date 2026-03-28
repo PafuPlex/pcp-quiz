@@ -417,8 +417,18 @@ h1 {
 .quiz-header {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   font-size: 13px;
   color: var(--text-dim);
+}
+
+.quiz-exit {
+  font-size: 12px;
+  opacity: 0.5;
+}
+
+.quiz-exit:hover {
+  opacity: 1;
 }
 
 .question-text {

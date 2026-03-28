@@ -127,7 +127,7 @@ function startQuiz() {
 
 function showCurrentQuestion() {
   const question = currentQuiz[currentIndex];
-  ui.showQuestion(question, currentIndex, currentQuiz.length, handleAnswer);
+  ui.showQuestion(question, currentIndex, currentQuiz.length, handleAnswer, goHome);
 }
 
 function handleAnswer(chosenIndex) {
@@ -137,7 +137,7 @@ function handleAnswer(chosenIndex) {
   recordAnswer(currentLang, question.id, isCorrect);
   sessionAnswers.push({ question, isCorrect, chosenIndex });
 
-  ui.showAnswer(question, currentIndex, currentQuiz.length, chosenIndex, handleNext);
+  ui.showAnswer(question, currentIndex, currentQuiz.length, chosenIndex, handleNext, goHome);
 }
 
 function handleNext() {

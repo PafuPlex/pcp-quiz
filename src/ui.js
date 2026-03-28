@@ -213,17 +213,19 @@ function renderHardest(hardest) {
 
 // ─── Quiz ─────────────────────────────────────────────────────────────────────
 
-export function showQuestion(question, index, total, onAnswer) {
+export function showQuestion(question, index, total, onAnswer, onExit) {
   app.innerHTML = buildQuestionHTML(question, index, total, null);
 
   for (const btn of app.querySelectorAll('.answer-btn')) {
     btn.addEventListener('click', () => onAnswer(Number(btn.dataset.index)));
   }
+  app.querySelector('[data-action="exit"]').addEventListener('click', onExit);
 }
 
-export function showAnswer(question, index, total, chosenIndex, onNext) {
+export function showAnswer(question, index, total, chosenIndex, onNext, onExit) {
   app.innerHTML = buildQuestionHTML(question, index, total, chosenIndex);
   app.querySelector('[data-action="next"]').addEventListener('click', onNext);
+  app.querySelector('[data-action="exit"]').addEventListener('click', onExit);
 }
 
 function buildQuestionHTML(question, index, total, chosenIndex) {
@@ -247,6 +249,7 @@ function buildQuestionHTML(question, index, total, chosenIndex) {
 
   return `
     <div class="quiz-header">
+      <button class="btn-link quiz-exit" data-action="exit">← exit</button>
       <span>${index + 1} / ${total}</span>
       <span>${pct}%</span>
     </div>
