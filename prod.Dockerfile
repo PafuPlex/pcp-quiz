@@ -26,8 +26,6 @@ COPY --from=builder /app/dist ./public
 RUN mkdir -p /app/data && chown node:node /app/data
 ENV DB=/app/data
 
-USER node
-
 EXPOSE 3000
 
 CMD ["node", "src/server.js"]
