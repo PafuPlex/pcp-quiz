@@ -196,4 +196,3 @@ async function exit(signal) {
 
 process.on('SIGINT', exit);
 process.on('SIGTERM', exit);
-process.on('SIGILL', exit);
