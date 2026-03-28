@@ -91,8 +91,9 @@ function bindAuthForm(root, onSubmit) {
 // ─── Home ─────────────────────────────────────────────────────────────────────
 
 export function showHome(overallStats, langComparison, languages, currentLang, handlers) {
-  const { total, seen, accuracy, hardest } = overallStats;
+  const { total, seen, accuracy, learned, hardest } = overallStats;
   const hasAnyHistory = langComparison.some((l) => l.seen > 0);
+  const learnedPct = total > 0 ? Math.round((learned / total) * 100) : 0;
 
   app.innerHTML = `
     <header class="home-header">
@@ -111,6 +112,10 @@ export function showHome(overallStats, langComparison, languages, currentLang, h
       <div class="stat-cell">
         <div class="stat-value">${accuracy !== null ? accuracy + '%' : '—'}</div>
         <div class="stat-label">Presnosť</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-value">${learnedPct}%</div>
+        <div class="stat-label">Vyučených</div>
       </div>
       <div class="stat-cell">
         <div class="stat-value">${total - seen}</div>

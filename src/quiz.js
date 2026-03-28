@@ -65,6 +65,11 @@ export function computeOverallStats(allQuestions, stats) {
       ? Math.round((totalCorrect / (totalCorrect + totalWrong)) * 100)
       : null;
 
+  const learned = allQuestions.filter((q) => {
+    const s = stats.answers[q.id];
+    return s && s.correct > s.wrong;
+  }).length;
+
   const hardest = allQuestions
     .filter((q) => (stats.answers[q.id]?.wrong ?? 0) > 0)
     .sort(
@@ -74,7 +79,7 @@ export function computeOverallStats(allQuestions, stats) {
     .slice(0, 5)
     .map((q) => ({ ...q, wrongCount: stats.answers[q.id].wrong }));
 
-  return { total, seen, accuracy, totalCorrect, totalWrong, hardest };
+  return { total, seen, accuracy, totalCorrect, totalWrong, learned, hardest };
 }
 
 // Shuffle answer options so users memorise content, not position.
