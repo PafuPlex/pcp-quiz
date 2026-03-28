@@ -1,0 +1,79 @@
+version: '3'
+
+vars:
+  IMAGE_NAME: claude-code
+  CONTAINER_NAME: claude-code-dev
+  WORKSPACE: "{{.PWD}}"
+
+tasks:
+  default:
+    desc: "List available tasks"
+    cmds:
+      - task --list
+
+  build:
+    desc: "Build Docker image with Claude Code"
+    cmds:
+      - docker build -t {{.IMAGE_NAME}} .
+    sources:
+      - Dockerfile
+
+  run:
+    desc: "Run Claude Code interactively (mounts current directory)"
+    deps: [build]
+    cmds:
+      - |
+        docker run -it --rm \
+          --name {{.CONTAINER_NAME}} \
+          -v {{.WORKSPACE}}:/workspace \
+          -v ~/.claude:/home/claudeuser/.claude \
+          {{.IMAGE_NAME}}
+
+  run:shell:
+    desc: "Open bash inside the container for debugging"
+    deps: [build]
+    cmds:
+      - |
+        docker run -it --rm \
+          --name {{.CONTAINER_NAME}}-shell \
+          -v {{.WORKSPACE}}:/workspace \
+          -v ~/.claude:/home/claudeuser/.claude \
+          --entrypoint bash \
+          {{.IMAGE_NAME}}
+
+  run:version:
+    desc: "Check Claude Code version inside the container"
+    deps: [build]
+    cmds:
+      - docker run --rm {{.IMAGE_NAME}} --version
+
+  clean:
+    desc: "Remove image and stop containers"
+    cmds:
+      - docker rm -f {{.CONTAINER_NAME}} 2>/dev/null || true
+      - docker rmi -f {{.IMAGE_NAME}} 2>/dev/null || true
+
+  logs:
+    desc: "Follow logs of a running container"
+    cmds:
+      - docker logs -f {{.CONTAINER_NAME}}
+
+  app:install:
+    desc: "Install app dependencies"
+    cmds:
+      - npm install
+
+  app:dev:
+    desc: "Start Vite dev server for the quiz app"
+    cmds:
+      - npm run dev
+
+  app:build:
+    desc: "Build the quiz app for production (output: dist/)"
+    cmds:
+      - npm run build
+
+  app:preview:
+    desc: "Preview the production build locally"
+    cmds:
+      - npm run preview

@@ -1,0 +1,5 @@
+.claude
+.task
+.env
+dist
+node_modules
