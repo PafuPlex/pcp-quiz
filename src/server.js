@@ -6,6 +6,7 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { randomUUID } from 'node:crypto';
+import { } from 'connect'
 
 const logger = {
     info: debug.debug('app'),
@@ -38,6 +39,7 @@ const sessions_db = new Map(
 const app = express();
 app.use(cookieParser());
 app.use(express.json());
+app.use(compression())
 app.use(express.static('public'))
 
 app.use((req, res, next) => {
@@ -165,13 +167,6 @@ app.listen(port, () => {
     logger.info(`Example app listening on port ${port}`);
 });
 
-async function exit(signal) {
-    console.log(`Exit signal: ${signal}`);
-    await writeFile(users_db_path, JSON.stringify(Array.from(users_db)));
-    await writeFile(sessions_db_path, JSON.stringify(Array.from(sessions_db)));
-    process.exit(0);
-}
-
 setInterval(async () => {
     logger.info('Clean interval.');
 
@@ -192,5 +187,13 @@ setInterval(async () => {
     await writeFile(sessions_db_path, JSON.stringify(Array.from(sessions_db)));
 }, 60 * 1000);
 
+async function exit(signal) {
+    console.log(`Exit signal: ${signal}`);
+    await writeFile(users_db_path, JSON.stringify(Array.from(users_db)));
+    await writeFile(sessions_db_path, JSON.stringify(Array.from(sessions_db)));
+    process.exit(0);
+}
+
 process.on('SIGINT', exit);
 process.on('SIGTERM', exit);
+process.on('SIGILL', exit);
