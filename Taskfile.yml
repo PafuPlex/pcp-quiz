@@ -14,7 +14,7 @@ tasks:
   build:
     desc: "Build Docker image with Claude Code"
     cmds:
-      - docker build -t {{.IMAGE_NAME}} .
+      - docker build -f clude.Dockerfile -t {{.IMAGE_NAME}} .
     sources:
       - Dockerfile
 

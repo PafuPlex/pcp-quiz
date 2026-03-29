@@ -144,6 +144,12 @@ export function showHome(overallStats, langComparison, languages, currentLang, h
   for (const btn of app.querySelectorAll('[data-lang]')) {
     btn.addEventListener('click', () => handlers.onSwitchLang(btn.dataset.lang));
   }
+
+  for (const row of app.querySelectorAll('[data-question-id]')) {
+    const qId = Number(row.dataset.questionId);
+    const q = hardest.find((h) => h.id === qId);
+    if (q) row.addEventListener('click', () => openQuestionModal(q));
+  }
 }
 
 function renderLangSwitcher(languages, currentLang) {
@@ -200,7 +206,7 @@ function renderHardest(hardest) {
   const rows = hardest
     .map(
       (q) => `
-        <div class="card-row">
+        <div class="card-row card-row--clickable" data-question-id="${q.id}">
           <span class="card-row-text">${q.text}</span>
           <span class="badge badge-error">${q.wrongCount}×</span>
         </div>
@@ -214,6 +220,36 @@ function renderHardest(hardest) {
     </div>
     <div class="card">${rows}</div>
   `;
+}
+
+function openQuestionModal(question) {
+  const answersHTML = question.answers
+    .map((text, i) => {
+      const cls = i === question.correctIndex ? 'answer-btn correct' : 'answer-btn';
+      return `
+        <button class="${cls}" disabled>
+          <span class="answer-label">${LABELS[i]}</span>${text}
+        </button>
+      `;
+    })
+    .join('');
+
+  const modal = document.createElement('div');
+  modal.className = 'modal-overlay';
+  modal.innerHTML = `
+    <div class="modal">
+      <button class="modal-close" data-action="close">✕</button>
+      <p class="question-text">${question.text}</p>
+      ${question.image ? `<img src="${question.image}" alt="" class="question-image" loading="lazy" />` : ''}
+      <div class="answers">${answersHTML}</div>
+    </div>
+  `;
+
+  const close = () => modal.remove();
+  modal.querySelector('[data-action="close"]').addEventListener('click', close);
+  modal.addEventListener('click', (e) => { if (e.target === modal) close(); });
+
+  document.body.appendChild(modal);
 }
 
 // ─── Quiz ─────────────────────────────────────────────────────────────────────

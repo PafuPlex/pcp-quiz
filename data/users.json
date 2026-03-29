@@ -1,1 +1,14 @@
-[["6dbad810-ef05-4076-8b88-02e1d7ed1830",{"id":"6dbad810-ef05-4076-8b88-02e1d7ed1830","username":"dev","password":"$2b$10$74sjHYbahCSrFFOk0fi/Pe5gmavlBA7HB88co6xJf97lJBbPY2QrS","data":{"username":"dev","password":"dev"}}]]
+[
+    [
+        "6dbad810-ef05-4076-8b88-02e1d7ed1830",
+        {
+            "id": "6dbad810-ef05-4076-8b88-02e1d7ed1830",
+            "username": "dev",
+            "password": "$2b$10$74sjHYbahCSrFFOk0fi/Pe5gmavlBA7HB88co6xJf97lJBbPY2QrS",
+            "data": {
+                "username": "dev",
+                "password": "dev"
+            }
+        }
+    ]
+]
