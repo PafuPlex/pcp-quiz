@@ -110,7 +110,7 @@ app.post('/api/register', async (req, res) => {
     if (!username || !password) return res.sendStatus(400);
 
     for (const user of users_db.values()) {
-        if (user.username) {
+        if (user.username === username) {
             return res.sendStatus(209);
         }
     }
