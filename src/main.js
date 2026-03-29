@@ -16,6 +16,13 @@ let currentQuiz = [];
 let currentIndex = 0;
 let sessionAnswers = []; // { question, isCorrect, chosenIndex }[]
 
+// ─── Session expiry ───────────────────────────────────────────────────────────
+
+window.addEventListener('app:unauthorized', () => {
+  initStats({});
+  showLogin();
+});
+
 // ─── Init ─────────────────────────────────────────────────────────────────────
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -68,10 +75,7 @@ async function handleLogin(username, password) {
 async function handleRegister(username, password) {
   try {
     await api.register(username, password);
-    await api.login(username, password);
-    const store = await api.getStore();
-    initStats(store);
-    switchLang(currentLang);
+    showLogin();
   } catch (err) {
     if (err.status === 209) return 'Toto meno je už obsadené.';
     return 'Chyba pri registrácii.';

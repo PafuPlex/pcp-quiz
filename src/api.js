@@ -14,6 +14,9 @@ async function request(method, path, body) {
   if (!res.ok) {
     const err = new Error(`HTTP ${res.status}`);
     err.status = res.status;
+    if (res.status === 401) {
+      window.dispatchEvent(new CustomEvent('app:unauthorized'));
+    }
     throw err;
   }
 
