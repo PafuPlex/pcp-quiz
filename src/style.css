@@ -436,6 +436,7 @@ h1 {
   line-height: 1.65;
   color: var(--text);
   margin: 22px 0 16px;
+  user-select: text;
 }
 
 .question-image {
@@ -469,6 +470,7 @@ h1 {
   display: flex;
   align-items: flex-start;
   gap: 10px;
+  user-select: text;
 }
 
 .answer-btn:hover:not(:disabled) {
